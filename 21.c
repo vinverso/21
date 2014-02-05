@@ -178,7 +178,8 @@ void dealPlayer(player * p, card * deckOfCards) {
 	p->handValue = 0;
 	card * dealt = dealRandomCard(deckOfCards);
 	int firstVal = scoreCard(dealt);
-	d->handValue = firstVal;
+	p->handValue = firstVal;
+	printf("%d ", p->handValue);
 	
 	while(1) {
 		printf("You were dealt a %s%s\n", dealt->rank, dealt->suit);
@@ -189,8 +190,8 @@ void dealPlayer(player * p, card * deckOfCards) {
 		}
 		dealt = dealRandomCard(deckOfCards);
 		int val = scoreCard(dealt);
-		d->handValue = d->handValue + val;
-		printf("%d ", d->handValue);
+		p->handValue = p->handValue + val;
+		printf("%d ", p->handValue);
 	}
 
 }
