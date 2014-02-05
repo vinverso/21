@@ -158,31 +158,48 @@ void placeBet(player * p) {
 
 void dealDealer(dealer * d, card * deckOfCards) {
 	d->handValue = 0;
-	
 	card * firstCard = dealRandomCard(deckOfCards);
-	
 	int firstVal = scoreCard(firstCard);
 	d->handValue = firstVal;
 	
-	printf("Dealer's first card dealt was %s%s. (Other's will remain hidden.)\n", firstCard->rank, firstCard->suit);
+	printf("Dealer's first card dealt was %s%s. (Other's will remain hidden.)\n\n", firstCard->rank, firstCard->suit);
 
 	while (d->handValue < 17) {
 		card * newCard = dealRandomCard(deckOfCards);
-		printf("new card rank: %s new card suit: %s\n", newCard->rank, newCard->suit);
 		int val = scoreCard(newCard);
 		d->handValue = d->handValue + val;
-		printf("%d ", d->handValue);
 		newCard = NULL;
 	}
 
 }
 
-void playNewHand(player * p, dealer * d, card * deckOfCards) {
+void dealPlayer(player * p, card * deckOfCards) {
 	char hitOrStay[6];
 	p->handValue = 0;
+	card * dealt = dealRandomCard(deckOfCards);
+	int firstVal = scoreCard(dealt);
+	d->handValue = firstVal;
+	
+	while(1) {
+		printf("You were dealt a %s%s\n", dealt->rank, dealt->suit);
+		printf("Would you like to hit or stay?\n");
+		fgets(hitOrStay, sizeof(char) * 6, stdin);
+		if (strcmp(hitOrStay, "hit")) {
+			break;
+		}
+		dealt = dealRandomCard(deckOfCards);
+		int val = scoreCard(dealt);
+		d->handValue = d->handValue + val;
+		printf("%d ", d->handValue);
+	}
+
+}
+
+void playNewHand(player * p, dealer * d, card * deckOfCards) {
 
 	placeBet(p);
 	dealDealer(d, deckOfCards);
+	dealPlayer(p, deckOfCards);
 	//deal both dealer and player
 	//check for duplicates
 	//score both hands once player stays
